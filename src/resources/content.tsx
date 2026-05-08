@@ -13,16 +13,22 @@ const person: Person = {
 };
 
 const newsletter: Newsletter = {
-  display: false,
+  display: true,
   title: <>Subscribe to GixMix Newsletter</>,
   description: <>Get new tools and updates delivered to your inbox</>,
 };
 
 const social: Social = [
   {
+    name: "Twitter",
+    icon: "twitter",
+    link: "https://x.com/gixmix",
+    essential: true,
+  },
+  {
     name: "GitHub",
     icon: "github",
-    link: "https://github.com",
+    link: "https://github.com/kaunda-a/gixmix",
     essential: true,
   },
   {
