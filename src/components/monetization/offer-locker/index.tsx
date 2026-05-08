@@ -45,7 +45,7 @@ export const OfferLocker: React.FC<OfferLockerProps> = ({
 }) => {
   const [showOffers, setShowOffers] = useState(false);
   const [selectedOffer, setSelectedOffer] = useState<string | null>(null);
-  const { unlocked, loading, error, activate, forceComplete, reset } = useLocker({ lockerId });
+  const { unlocked, loading, error, showWidget, activate, forceComplete, reset } = useLocker({ lockerId });
 
   const handleSelectOffer = (offerId: string) => {
     setSelectedOffer(offerId);
@@ -134,6 +134,11 @@ export const OfferLocker: React.FC<OfferLockerProps> = ({
   return (
     <RevealFx translateY="8" fillWidth>
       <Card fillWidth padding="xl" radius="m" border="neutral-alpha-weak" background="page">
+        {/* CPA Grip widget mount point */}
+        <div
+          id={`cpagrip-${lockerId}`}
+          style={{ display: showWidget ? "block" : "none" }}
+        />
         <Column gap="l" horizontal="center" align="center">
           <Heading variant="heading-strong-m">Choose an Offer</Heading>
           <Text onBackground="neutral-weak" variant="body-default-m" align="center">

@@ -30,7 +30,7 @@ export const VideoLocker: React.FC<VideoLockerProps> = ({
   videoUrl,
   videoThumbnail,
 }) => {
-  const { unlocked, loading, error, activate, forceComplete, reset } = useLocker({ lockerId });
+  const { unlocked, loading, error, showWidget, activate, forceComplete, reset } = useLocker({ lockerId });
   const autoTriggered = useRef(false);
 
   useEffect(() => {
@@ -104,6 +104,13 @@ export const VideoLocker: React.FC<VideoLockerProps> = ({
             background: "linear-gradient(90deg, var(--brand-background-strong), var(--accent-background-strong))",
           }}
         />
+
+        {/* CPA Grip widget mount point */}
+        <div
+          id={`cpagrip-${lockerId}`}
+          style={{ display: showWidget ? "block" : "none" }}
+        />
+
         <Column gap="l" horizontal="center" align="center">
           {videoThumbnail ? (
             <div style={{ width: "100%", maxWidth: "400px", borderRadius: "var(--radius-m)", overflow: "hidden", position: "relative" }}>

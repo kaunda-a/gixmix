@@ -32,7 +32,7 @@ export const URLLocker: React.FC<URLLockerProps> = ({
   redirectUrl,
   fileName,
 }) => {
-  const { unlocked, loading, error, activate, forceComplete, reset } = useLocker({ lockerId });
+  const { unlocked, loading, error, showWidget, activate, forceComplete, reset } = useLocker({ lockerId });
   const autoTriggered = useRef(false);
 
   useEffect(() => {
@@ -114,6 +114,13 @@ export const URLLocker: React.FC<URLLockerProps> = ({
             background: "linear-gradient(90deg, var(--brand-background-strong), var(--accent-background-strong))",
           }}
         />
+
+        {/* CPA Grip widget mount point */}
+        <div
+          id={`cpagrip-${lockerId}`}
+          style={{ display: showWidget ? "block" : "none" }}
+        />
+
         <Column gap="l" horizontal="center" align="center">
           <Row gap="16" vertical="center">
             <Icon name="lock" size="l" />

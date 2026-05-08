@@ -30,11 +30,7 @@ export const ContentLocker: React.FC<ContentLockerProps> = ({
   lockerId = "1894762",
   mode = "component",
 }) => {
-  const { unlocked, loading, error, progress, activate, forceComplete, reset } = useLocker({ lockerId });
-
-  const handleUnlock = () => {
-    activate();
-  };
+  const { unlocked, loading, error, showWidget, activate, forceComplete, reset } = useLocker({ lockerId });
 
   if (unlocked) return <>{children}</>;
 
@@ -62,6 +58,12 @@ export const ContentLocker: React.FC<ContentLockerProps> = ({
           }}
         />
 
+        {/* CPA Grip widget mount point — rendered before script loads */}
+        <div
+          id={`cpagrip-${lockerId}`}
+          style={{ display: showWidget ? "block" : "none" }}
+        />
+
         {loading && (
           <div
             style={{
@@ -69,9 +71,9 @@ export const ContentLocker: React.FC<ContentLockerProps> = ({
               top: 3,
               left: 0,
               height: "3px",
-              width: `${progress}%`,
+              width: "100%",
               background: "var(--brand-background-strong)",
-              transition: "width 0.5s ease",
+              animation: "pulse 1.5s ease-in-out infinite",
               zIndex: 1,
             }}
           />
@@ -103,7 +105,7 @@ export const ContentLocker: React.FC<ContentLockerProps> = ({
           )}
 
           <Column gap="12" horizontal="center" align="center">
-            <Button size="l" variant="primary" onClick={handleUnlock} disabled={loading}>
+            <Button size="l" variant="primary" onClick={activate} disabled={loading}>
               {loading ? (
                 <Row gap="8" vertical="center">
                   <span style={{
