@@ -1,0 +1,90 @@
+import { ToolsData } from "@/types";
+
+const tools: ToolsData = {
+  title: "All Tools",
+  description: "Browse our collection of free online tools. All tools run entirely in your browser - nothing is sent to any server.",
+  tools: [
+    {
+      slug: "calculator",
+      name: "Scientific Calculator",
+      description: "A full-featured scientific calculator with trigonometric, logarithmic, and algebraic functions.",
+      icon: "calculator",
+      category: "calculators",
+      featured: true,
+    },
+    {
+      slug: "currency-converter",
+      name: "Currency Converter",
+      description: "Convert between 170+ world currencies using real-time exchange rates. Free API-powered.",
+      icon: "globe",
+      category: "converters",
+      featured: true,
+    },
+    {
+      slug: "pokedex",
+      name: "Pok\u00e9dex Lookup",
+      description: "Search any Pok\u00e9mon by name or ID -- view stats, types, abilities, and official artwork.",
+      icon: "chip",
+      category: "fun",
+      featured: true,
+    },
+    {
+      slug: "weather",
+      name: "Weather App",
+      description: "Get current weather conditions for any city worldwide. Free, no API key required.",
+      icon: "globe",
+      category: "utilities",
+      featured: true,
+    },
+    {
+      slug: "random-user",
+      name: "Random User Generator",
+      description: "Generate random user profiles with names, emails, photos, and locations for testing.",
+      icon: "person",
+      category: "utilities",
+      featured: true,
+    },
+    {
+      slug: "url-shortener",
+      name: "URL Shortener",
+      description: "Shorten any URL instantly using free APIs. No signup required.",
+      icon: "link",
+      category: "generators",
+      featured: true,
+    },
+    {
+      slug: "qr-generator",
+      name: "QR Code Generator",
+      description: "Generate QR codes from text, URLs, or any data. Download as PNG.",
+      icon: "qrcode",
+      category: "generators",
+      featured: true,
+    },
+    {
+      slug: "password-generator",
+      name: "Password Generator",
+      description: "Generate strong, secure passwords with customizable length and character types.",
+      icon: "key",
+      category: "security",
+      featured: true,
+    },
+    {
+      slug: "text-converter",
+      name: "Text Case Converter",
+      description: "Convert text between uppercase, lowercase, title case, sentence case, and more.",
+      icon: "rectangle",
+      category: "text",
+      featured: true,
+    },
+    {
+      slug: "unit-converter",
+      name: "Unit Converter",
+      description: "Convert between different units of measurement - length, weight, temperature, and more.",
+      icon: "search",
+      category: "converters",
+      featured: true,
+    },
+  ],
+};
+
+export { tools };
