@@ -25,7 +25,7 @@ export const VideoLocker: React.FC<VideoLockerProps> = ({
   title = "Video Preview",
   description = "Complete a quick offer to watch the full video",
   ctaText = "Watch Video",
-  lockerId = "1580801",
+  lockerId = "1894762",
   videoUrl,
   videoThumbnail,
 }) => {

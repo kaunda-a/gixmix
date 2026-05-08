@@ -26,7 +26,7 @@ export const URLLocker: React.FC<URLLockerProps> = ({
   title = "Download Unlocked",
   description = "Complete one offer to access this download",
   ctaText = "Access Download",
-  lockerId = "1580801",
+  lockerId = "1894762",
   downloadUrl,
   redirectUrl,
   fileName,

@@ -30,7 +30,7 @@ const monetization: MonetizationConfig = {
     title: "Premium Content Unlocked",
     description: "Complete a quick offer to unlock this premium content",
     ctaText: "Unlock Now",
-    lockerId: "1580801",
+    lockerId: "1894762",
     embedScript: `var lck = false;`,
     offerCount: 2,
   },
@@ -40,7 +40,7 @@ const monetization: MonetizationConfig = {
     title: "Download Unlocked",
     description: "Complete one offer to access this download",
     ctaText: "Access Download",
-    lockerId: "1580801",
+    lockerId: "1894762",
     offerCount: 1,
   },
 
@@ -49,7 +49,7 @@ const monetization: MonetizationConfig = {
     title: "Get Free Rewards",
     description: "Choose an offer below to earn credits and unlock rewards",
     ctaText: "Browse Offers",
-    lockerId: "1580801",
+    lockerId: "1894762",
     offerCount: 4,
   },
 
@@ -58,7 +58,7 @@ const monetization: MonetizationConfig = {
     title: "Video Preview",
     description: "Complete a quick offer to watch the full video",
     ctaText: "Watch Video",
-    lockerId: "1580801",
+    lockerId: "1894762",
     offerCount: 1,
   },
 };
