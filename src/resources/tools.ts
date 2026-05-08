@@ -108,6 +108,14 @@ const tools: ToolsData = {
       category: "fun",
       featured: true,
     },
+    {
+      slug: "keyword-ideas",
+      name: "Keyword Ideas Generator",
+      description: "Enter a seed keyword and get related keyword ideas for SEO. Show 5 free results, unlock the full list through a quick offer.",
+      icon: "search",
+      category: "utilities",
+      featured: true,
+    },
   ],
 };
 
