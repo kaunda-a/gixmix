@@ -26,7 +26,7 @@ import {
   ListItem,
   Line,
 } from "@once-ui-system/core";
-import { ContentLocker } from "@/components/monetization";
+import { ContentLocker, OfferLocker, VideoLocker, URLLocker } from "@/components/monetization";
 
 type CustomLinkProps = React.AnchorHTMLAttributes<HTMLAnchorElement> & {
   href: string;
@@ -204,6 +204,9 @@ const components = {
   Media,
   SmartLink,
   ContentLocker,
+  OfferLocker,
+  VideoLocker,
+  URLLocker,
 
   // Simple download link for MDX - avoids client component and serialization issues
   DownloadLink: ({ children }: { children: React.ReactNode }) => (

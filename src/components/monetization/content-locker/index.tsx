@@ -30,17 +30,9 @@ export const ContentLocker: React.FC<ContentLockerProps> = ({
   lockerId = "1894762",
   mode = "component",
 }) => {
-  const { unlocked, loading, error, activate, forceComplete, reset } = useLocker({ lockerId });
+  const { unlocked, loading, error, progress, activate, forceComplete, reset } = useLocker({ lockerId });
 
   const handleUnlock = () => {
-    if (mode === "page") {
-      const div = document.createElement("div");
-      div.innerHTML = `<script type="text/javascript">var lck = false;<\/script><script type="text/javascript" src="https://quartzfiles.com/script_include.php?id=${lockerId}&tracking_id="><\/script><script type="text/javascript">if(!lck){top.location = 'https://quartzfiles.com/help/ablk.php?lkt=1'; }<\/script><noscript>Please enable JavaScript to access this page.<meta http-equiv="refresh" content="0;url=https://quartzfiles.com/help/enable_javascript.php?lkt=1" /><\/noscript>`;
-      while (div.firstChild) {
-        document.head.appendChild(div.firstChild);
-      }
-      return;
-    }
     activate();
   };
 
@@ -69,38 +61,73 @@ export const ContentLocker: React.FC<ContentLockerProps> = ({
             background: "linear-gradient(90deg, var(--brand-background-strong), var(--accent-background-strong))",
           }}
         />
+
+        {loading && (
+          <div
+            style={{
+              position: "absolute",
+              top: 3,
+              left: 0,
+              height: "3px",
+              width: `${progress}%`,
+              background: "var(--brand-background-strong)",
+              transition: "width 0.5s ease",
+              zIndex: 1,
+            }}
+          />
+        )}
+
         <Column gap="l" horizontal="center" align="center">
-          <Row gap="12" vertical="center">
-            <Icon name="lock" size="l" />
-            <Icon name="gift" size="l" />
-          </Row>
+          <Icon name="lock" size="xl" />
+
           <Heading variant="heading-strong-m" align="center">
             {title}
           </Heading>
+
           <Text onBackground="neutral-weak" variant="body-default-m" align="center">
             {description}
           </Text>
 
           {error && (
-            <Column gap="8" horizontal="center" align="center">
-              <Text variant="body-default-s" onBackground="danger-weak" align="center">
-                {error}
-              </Text>
-              <Button size="s" variant="tertiary" onClick={activate}>
-                Retry
-              </Button>
-            </Column>
+            <Card fillWidth padding="m" radius="s" border="danger-alpha-weak" background="page">
+              <Column gap="8" horizontal="center" align="center">
+                <Icon name="warning" size="m" />
+                <Text variant="body-default-s" onBackground="danger-weak" align="center">
+                  {error}
+                </Text>
+                <Button size="s" variant="secondary" onClick={activate}>
+                  Try Again
+                </Button>
+              </Column>
+            </Card>
           )}
 
-          <Button size="l" variant="primary" onClick={handleUnlock} disabled={loading}>
-            {loading ? "Loading..." : ctaText}
-          </Button>
-
-          {loading && (
-            <Button size="s" variant="secondary" onClick={forceComplete}>
-              I've completed the offer
+          <Column gap="12" horizontal="center" align="center">
+            <Button size="l" variant="primary" onClick={handleUnlock} disabled={loading}>
+              {loading ? (
+                <Row gap="8" vertical="center">
+                  <span style={{
+                    display: "inline-block",
+                    width: "14px",
+                    height: "14px",
+                    border: "2px solid var(--brand-on-background-strong)",
+                    borderTopColor: "transparent",
+                    borderRadius: "50%",
+                    animation: "spin 0.8s linear infinite",
+                  }} />
+                  Loading...
+                </Row>
+              ) : (
+                ctaText
+              )}
             </Button>
-          )}
+
+            {loading && (
+              <Button size="s" variant="secondary" onClick={forceComplete}>
+                I've completed the offer
+              </Button>
+            )}
+          </Column>
 
           <Column gap="4" horizontal="center" align="center">
             <Text onBackground="neutral-weak" variant="body-default-s" align="center">
@@ -112,9 +139,14 @@ export const ContentLocker: React.FC<ContentLockerProps> = ({
           </Column>
 
           {process.env.NODE_ENV === "development" && (
-            <Button size="s" variant="tertiary" onClick={reset}>
-              Reset (Dev)
-            </Button>
+            <Row gap="8" horizontal="center">
+              <Button size="s" variant="tertiary" onClick={forceComplete}>
+                Force Unlock (Dev)
+              </Button>
+              <Button size="s" variant="tertiary" onClick={reset}>
+                Reset (Dev)
+              </Button>
+            </Row>
           )}
         </Column>
       </Card>

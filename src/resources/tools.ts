@@ -109,6 +109,22 @@ const tools: ToolsData = {
       featured: true,
     },
     {
+      slug: "meta-tag-generator",
+      name: "SEO Meta Tag Generator",
+      description: "Generate optimized meta tags, Open Graph tags, and Twitter cards. Bulk generation and schema markup available.",
+      icon: "code",
+      category: "utilities",
+      featured: true,
+    },
+    {
+      slug: "keyword-density",
+      name: "Keyword Density Analyzer",
+      description: "Analyze keyword frequency and density in any text. Shows top 10 free results, unlock full analysis with stop word filtering and n-gram analysis.",
+      icon: "search",
+      category: "utilities",
+      featured: true,
+    },
+    {
       slug: "keyword-ideas",
       name: "Keyword Ideas Generator",
       description: "Enter a seed keyword and get related keyword ideas for SEO. Show 5 free results, unlock the full list through a quick offer.",

@@ -10,7 +10,6 @@ import {
   Icon,
   RevealFx,
   Row,
-  Flex,
 } from "@once-ui-system/core";
 import { useLocker } from "../cpa-grip/useLocker";
 
@@ -45,7 +44,13 @@ export const OfferLocker: React.FC<OfferLockerProps> = ({
   offers = defaultOffers,
 }) => {
   const [showOffers, setShowOffers] = useState(false);
-  const { unlocked, loading, error, activate, forceComplete } = useLocker({ lockerId });
+  const [selectedOffer, setSelectedOffer] = useState<string | null>(null);
+  const { unlocked, loading, error, activate, forceComplete, reset } = useLocker({ lockerId });
+
+  const handleSelectOffer = (offerId: string) => {
+    setSelectedOffer(offerId);
+    activate();
+  };
 
   if (unlocked) {
     return (
@@ -74,6 +79,11 @@ export const OfferLocker: React.FC<OfferLockerProps> = ({
             <Text onBackground="neutral-weak" variant="body-default-m" align="center">
               You&apos;ve earned your reward. Enjoy!
             </Text>
+            {process.env.NODE_ENV === "development" && (
+              <Button size="s" variant="tertiary" onClick={reset}>
+                Reset (Dev)
+              </Button>
+            )}
           </Column>
         </Card>
       </RevealFx>
@@ -102,9 +112,7 @@ export const OfferLocker: React.FC<OfferLockerProps> = ({
             }}
           />
           <Column gap="l" horizontal="center" align="center">
-            <Row gap="12" vertical="center">
-              <Icon name="gift" size="l" />
-            </Row>
+            <Icon name="gift" size="xl" />
             <Heading variant="heading-strong-m" align="center">
               {title}
             </Heading>
@@ -133,49 +141,87 @@ export const OfferLocker: React.FC<OfferLockerProps> = ({
           </Text>
 
           {error && (
-            <Column gap="8" horizontal="center" align="center">
-              <Text variant="body-default-s" onBackground="danger-weak" align="center">
-                {error}
-              </Text>
-              <Button size="s" variant="tertiary" onClick={activate}>
-                Retry
-              </Button>
-            </Column>
+            <Card fillWidth padding="m" radius="s" border="danger-alpha-weak" background="page">
+              <Column gap="8" horizontal="center" align="center">
+                <Icon name="warning" size="m" />
+                <Text variant="body-default-s" onBackground="danger-weak" align="center">
+                  {error}
+                </Text>
+                <Button size="s" variant="secondary" onClick={activate}>
+                  Try Again
+                </Button>
+              </Column>
+            </Card>
           )}
 
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))", gap: "1rem", width: "100%" }}>
-            {offers.map((offer) => (
-              <Card
-                key={offer.id}
-                fillWidth
-                padding="m"
-                radius="m"
-                border="neutral-alpha-weak"
-                background="page"
-                onClick={activate}
-                style={{ cursor: loading ? "not-allowed" : "pointer" }}
-              >
-                <Column gap="8" horizontal="center" align="center">
-                  <Icon name={offer.icon} size="m" />
-                  <Heading as="h3" variant="heading-strong-xs">{offer.title}</Heading>
-                  <Text onBackground="neutral-weak" variant="body-default-s" align="center">
-                    {offer.description}
-                  </Text>
-                  <Text variant="body-default-s" onBackground="brand-medium">
-                    Payout: {offer.payout}
-                  </Text>
-                  <Button size="s" variant="primary" disabled={loading}>
-                    {loading ? "Loading..." : "Complete"}
-                  </Button>
-                </Column>
-              </Card>
-            ))}
+            {offers.map((offer) => {
+              const isSelected = selectedOffer === offer.id;
+              return (
+                <Card
+                  key={offer.id}
+                  fillWidth
+                  padding="m"
+                  radius="m"
+                  border={isSelected ? "brand-alpha-medium" : "neutral-alpha-weak"}
+                  background={isSelected ? "brand-alpha-weak" : "page"}
+                  style={{ transition: "all 0.2s ease" }}
+                >
+                  <Column gap="8" horizontal="center" align="center">
+                    <Icon name={offer.icon} size="m" />
+                    <Heading as="h3" variant="heading-strong-xs">{offer.title}</Heading>
+                    <Text onBackground="neutral-weak" variant="body-default-s" align="center">
+                      {offer.description}
+                    </Text>
+                    <Text variant="body-default-s" onBackground="brand-medium">
+                      Payout: {offer.payout}
+                    </Text>
+                    <Button
+                      size="s"
+                      variant={isSelected && loading ? "secondary" : "primary"}
+                      disabled={loading}
+                      onClick={() => handleSelectOffer(offer.id)}
+                    >
+                      {isSelected && loading ? (
+                        <Row gap="8" vertical="center">
+                          <span style={{
+                            display: "inline-block",
+                            width: "12px",
+                            height: "12px",
+                            border: "2px solid var(--brand-on-background-strong)",
+                            borderTopColor: "transparent",
+                            borderRadius: "50%",
+                            animation: "spin 0.8s linear infinite",
+                          }} />
+                          Loading...
+                        </Row>
+                      ) : (
+                        "Complete"
+                      )}
+                    </Button>
+                  </Column>
+                </Card>
+              );
+            })}
           </div>
 
           {loading && (
-            <Button size="s" variant="secondary" onClick={forceComplete}>
-              I've completed the offer
-            </Button>
+            <Row gap="8" horizontal="center">
+              <Button size="s" variant="secondary" onClick={forceComplete}>
+                I've completed the offer
+              </Button>
+            </Row>
+          )}
+
+          {process.env.NODE_ENV === "development" && (
+            <Row gap="8" horizontal="center">
+              <Button size="s" variant="tertiary" onClick={forceComplete}>
+                Force Unlock (Dev)
+              </Button>
+              <Button size="s" variant="tertiary" onClick={reset}>
+                Reset (Dev)
+              </Button>
+            </Row>
           )}
         </Column>
       </Card>

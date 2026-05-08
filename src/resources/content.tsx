@@ -6,7 +6,7 @@ const person: Person = {
   lastName: "",
   name: "GixMix Tools",
   role: "Free Online Tools",
-  avatar: "/images/avatar.jpg",
+  avatar: "/images/avatar.svg",
   email: "hello@gixmix.com",
   location: "America/New_York",
   languages: [],

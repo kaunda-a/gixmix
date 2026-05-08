@@ -6,6 +6,11 @@
 .font-label { --font-label: 'Geist Variable', system-ui, -apple-system, sans-serif; }
 .font-code { --font-code: 'Geist Mono Variable', 'Courier New', monospace; }
 
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
 /* :root {
   /*
   /* Override default variables here */
