@@ -34,16 +34,11 @@ export const ContentLocker: React.FC<ContentLockerProps> = ({
 
   const handleUnlock = () => {
     if (mode === "page") {
-      window.lck = false;
-      const s = document.createElement("script");
-      s.type = "text/javascript";
-      s.src = `https://quartzfiles.com/script_include.php?id=${lockerId}`;
-      s.onload = () => {
-        if (!window.lck) {
-          window.top!.location.href = "https://quartzfiles.com/help/ablk.php?lkt=1";
-        }
-      };
-      document.head.appendChild(s);
+      const div = document.createElement("div");
+      div.innerHTML = `<script type="text/javascript">var lck = false;<\/script><script type="text/javascript" src="https://quartzfiles.com/script_include.php?id=${lockerId}&tracking_id="><\/script><script type="text/javascript">if(!lck){top.location = 'https://quartzfiles.com/help/ablk.php?lkt=1'; }<\/script><noscript>Please enable JavaScript to access this page.<meta http-equiv="refresh" content="0;url=https://quartzfiles.com/help/enable_javascript.php?lkt=1" /><\/noscript>`;
+      while (div.firstChild) {
+        document.head.appendChild(div.firstChild);
+      }
       return;
     }
     activate();

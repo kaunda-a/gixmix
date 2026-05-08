@@ -31,7 +31,7 @@ const monetization: MonetizationConfig = {
     description: "Complete a quick offer to unlock this premium content",
     ctaText: "Unlock Now",
     lockerId: "1894762",
-    embedScript: `var lck = false;`,
+    embedScript: `var lck = false;</script><script type="text/javascript" src="https://quartzfiles.com/script_include.php?id=1894762&tracking_id="></script><script type="text/javascript">if(!lck){top.location = 'https://quartzfiles.com/help/ablk.php?lkt=1'; }</script><noscript>Please enable JavaScript to access this page.<meta http-equiv="refresh" content="0;url=https://quartzfiles.com/help/enable_javascript.php?lkt=1" /></noscript>`,
     offerCount: 2,
   },
 
