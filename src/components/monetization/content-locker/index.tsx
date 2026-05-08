@@ -53,7 +53,27 @@ export const ContentLocker: React.FC<ContentLockerProps> = ({
 
   return (
     <RevealFx translateY="8" fillWidth>
-      <Card fillWidth padding="xl" radius="m" border="brand-alpha-medium" background="page">
+      <Card
+        fillWidth
+        padding="xl"
+        radius="m"
+        border="brand-alpha-medium"
+        background="page"
+        style={{
+          position: "relative",
+          overflow: "hidden",
+        }}
+      >
+        <div
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            right: 0,
+            height: "3px",
+            background: "linear-gradient(90deg, var(--brand-background-strong), var(--accent-background-strong))",
+          }}
+        />
         <Column gap="l" horizontal="center" align="center">
           <Row gap="12" vertical="center">
             <Icon name="lock" size="l" />
@@ -67,26 +87,23 @@ export const ContentLocker: React.FC<ContentLockerProps> = ({
           </Text>
 
           {error && (
-            <Text variant="body-default-s" onBackground="danger-weak" align="center">
-              {error}
-            </Text>
+            <Column gap="8" horizontal="center" align="center">
+              <Text variant="body-default-s" onBackground="danger-weak" align="center">
+                {error}
+              </Text>
+              <Button size="s" variant="tertiary" onClick={activate}>
+                Retry
+              </Button>
+            </Column>
           )}
 
           <Button size="l" variant="primary" onClick={handleUnlock} disabled={loading}>
             {loading ? "Loading..." : ctaText}
           </Button>
 
-          {/* Manual completion button for when auto-detection fails */}
           {loading && (
             <Button size="s" variant="secondary" onClick={forceComplete}>
               I've completed the offer
-            </Button>
-          )}
-
-          {/* Reset button for testing */}
-          {process.env.NODE_ENV === "development" && (
-            <Button size="s" variant="tertiary" onClick={reset}>
-              Reset Locker (Dev Only)
             </Button>
           )}
 
@@ -98,6 +115,12 @@ export const ContentLocker: React.FC<ContentLockerProps> = ({
               100% free &middot; Takes 1-2 minutes
             </Text>
           </Column>
+
+          {process.env.NODE_ENV === "development" && (
+            <Button size="s" variant="tertiary" onClick={reset}>
+              Reset (Dev)
+            </Button>
+          )}
         </Column>
       </Card>
     </RevealFx>

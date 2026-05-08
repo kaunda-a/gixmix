@@ -14,6 +14,7 @@ import {
   SpacingToken,
 } from "@once-ui-system/core";
 import { BannerWrapper, Footer, Header, RouteGuard, Providers } from "@/components";
+import Analytics from "@/components/Analytics";
 import { baseURL, effects, fonts, style, dataStyle, home } from "@/resources";
 
 export async function generateMetadata() {
@@ -101,6 +102,7 @@ export default async function RootLayout({
           }}
         />
       </head>
+      <Analytics />
       <Providers>
         <Column
           as="body"

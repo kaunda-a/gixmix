@@ -58,6 +58,21 @@ const home: Home = {
   ),
 };
 
+const features: { path: string; label: string; title: string; description: string } = {
+  path: "/features",
+  label: "Features",
+  title: "Features – GixMix",
+  description: "Discover all the features GixMix offers — free online tools, no sign-ups, no ads.",
+};
+
+const contact: { path: string; label: string; title: string; description: string; email: string } = {
+  path: "/contact",
+  label: "Contact",
+  title: "Contact – GixMix",
+  description: "Get in touch with the GixMix team. We'd love to hear from you.",
+  email: "hello@gixmix.com",
+};
+
 const about: About = {
   path: "/about",
   label: "About",
@@ -123,4 +138,4 @@ const gallery: Gallery = {
   images: [],
 };
 
-export { person, social, newsletter, home, about, blog, work, gallery };
+export { person, social, newsletter, home, about, blog, work, gallery, features, contact };

@@ -29,7 +29,7 @@ export const VideoLocker: React.FC<VideoLockerProps> = ({
   videoUrl,
   videoThumbnail,
 }) => {
-  const { unlocked, loading, error, activate } = useLocker({ lockerId });
+  const { unlocked, loading, error, activate, forceComplete } = useLocker({ lockerId });
 
   if (unlocked && videoUrl) {
     return (
@@ -73,7 +73,24 @@ export const VideoLocker: React.FC<VideoLockerProps> = ({
 
   return (
     <RevealFx translateY="8" fillWidth>
-      <Card fillWidth padding="xl" radius="m" border="brand-alpha-medium" background="page">
+      <Card
+        fillWidth
+        padding="xl"
+        radius="m"
+        border="brand-alpha-medium"
+        background="page"
+        style={{ position: "relative", overflow: "hidden" }}
+      >
+        <div
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            right: 0,
+            height: "3px",
+            background: "linear-gradient(90deg, var(--brand-background-strong), var(--accent-background-strong))",
+          }}
+        />
         <Column gap="l" horizontal="center" align="center">
           {videoThumbnail && (
             <div style={{ width: "100%", maxWidth: "400px", borderRadius: "var(--radius-m)", overflow: "hidden" }}>
@@ -89,14 +106,25 @@ export const VideoLocker: React.FC<VideoLockerProps> = ({
           <Text onBackground="neutral-weak" variant="body-default-m" align="center">{description}</Text>
 
           {error && (
-            <Text variant="body-default-s" onBackground="danger-weak" align="center">
-              {error}
-            </Text>
+            <Column gap="8" horizontal="center" align="center">
+              <Text variant="body-default-s" onBackground="danger-weak" align="center">
+                {error}
+              </Text>
+              <Button size="s" variant="tertiary" onClick={activate}>
+                Retry
+              </Button>
+            </Column>
           )}
 
           <Button size="l" variant="primary" onClick={activate} disabled={loading}>
             {loading ? "Loading..." : ctaText}
           </Button>
+
+          {loading && (
+            <Button size="s" variant="secondary" onClick={forceComplete}>
+              I've completed the offer
+            </Button>
+          )}
 
           <Text onBackground="neutral-weak" variant="body-default-xs" align="center">
             No credit card &middot; Takes 1-2 minutes

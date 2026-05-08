@@ -84,6 +84,30 @@ const tools: ToolsData = {
       category: "converters",
       featured: true,
     },
+    {
+      slug: "joke-generator",
+      name: "Joke Generator",
+      description: "Get random jokes from various categories. Safe mode enabled for family-friendly humor.",
+      icon: "smiley",
+      category: "fun",
+      featured: true,
+    },
+    {
+      slug: "dictionary",
+      name: "Dictionary Lookup",
+      description: "Look up definitions, phonetics, pronunciations, and usage examples for any English word.",
+      icon: "book",
+      category: "text",
+      featured: true,
+    },
+    {
+      slug: "name-predictor",
+      name: "Name Predictor",
+      description: "Predict age, gender, and nationality from a first name using AI-powered APIs.",
+      icon: "symbol",
+      category: "fun",
+      featured: true,
+    },
   ],
 };
 

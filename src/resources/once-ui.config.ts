@@ -20,6 +20,8 @@ const routes: RoutesConfig = {
   "/about": true,
   "/tools": true,
   "/blog": true,
+  "/features": true,
+  "/contact": true,
 };
 
 const display: DisplayConfig = {

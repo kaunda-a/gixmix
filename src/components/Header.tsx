@@ -3,50 +3,19 @@
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
-import { Fade, Flex, Line, Row, ToggleButton, useTheme } from "@once-ui-system/core";
+import { Fade, Flex, Row, ToggleButton, useTheme } from "@once-ui-system/core";
 
-import { routes, display, person, about, blog, work } from "@/resources";
+import { routes, display, about, blog, person } from "@/resources";
 import { ThemeToggle } from "./ThemeToggle";
 import styles from "./Header.module.scss";
-
-type TimeDisplayProps = {
-  timeZone: string;
-  locale?: string;
-};
-
-const TimeDisplay: React.FC<TimeDisplayProps> = ({ timeZone, locale = "en-GB" }) => {
-  const [currentTime, setCurrentTime] = useState("");
-
-  useEffect(() => {
-    const updateTime = () => {
-      const now = new Date();
-      const options: Intl.DateTimeFormatOptions = {
-        timeZone,
-        hour: "2-digit",
-        minute: "2-digit",
-        second: "2-digit",
-        hour12: false,
-      };
-      const timeString = new Intl.DateTimeFormat(locale, options).format(now);
-      setCurrentTime(timeString);
-    };
-
-    updateTime();
-    const intervalId = setInterval(updateTime, 1000);
-
-    return () => clearInterval(intervalId);
-  }, [timeZone, locale]);
-
-  return <>{currentTime}</>;
-};
-
-export default TimeDisplay;
 
 export const Header = () => {
   const pathname = usePathname() ?? "";
   const { theme } = useTheme();
   const [mounted, setMounted] = useState(false);
   const [currentTheme, setCurrentTheme] = useState("light");
+  const [scrolled, setScrolled] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   useEffect(() => {
     setMounted(true);
@@ -56,6 +25,14 @@ export const Header = () => {
   useEffect(() => {
     setCurrentTheme(document.documentElement.getAttribute("data-theme") || "light");
   }, [theme]);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 80);
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const logoSrc = mounted && currentTheme === "dark"
     ? "/trademarks/wordmark-dark.svg"
@@ -110,72 +87,50 @@ export const Header = () => {
           >
             <Row gap="4" vertical="center" textVariant="body-default-s" suppressHydrationWarning>
               {routes["/"] && (
-                <ToggleButton prefixIcon="home" href="/" selected={pathname === "/"} />
+                <ToggleButton href="/" label="Home" selected={pathname === "/"} />
               )}
-              <Line background="neutral-alpha-medium" vert maxHeight="24" />
-              {routes["/tools"] && (
-                <>
-                  <Row s={{ hide: true }}>
-                    <ToggleButton
-                      prefixIcon="tools"
-                      href="/tools"
-                      label="Tools"
-                      selected={pathname === "/tools" || pathname.startsWith("/tools/")}
-                    />
-                  </Row>
-                  <Row hide s={{ hide: false }}>
-                    <ToggleButton
-                      prefixIcon="tools"
-                      href="/tools"
-                      selected={pathname === "/tools" || pathname.startsWith("/tools/")}
-                    />
-                  </Row>
-                </>
+              <Row s={{ hide: true }}>
+                <ToggleButton
+                  href="/tools"
+                  label="Tools"
+                  selected={pathname === "/tools" || pathname.startsWith("/tools/")}
+                />
+              </Row>
+              <Row hide s={{ hide: false }}>
+                <ToggleButton
+                  href="/tools"
+                  selected={pathname === "/tools" || pathname.startsWith("/tools/")}
+                />
+              </Row>
+              {routes["/features"] && (
+                <ToggleButton
+                  href="/features"
+                  label="Features"
+                  selected={pathname === "/features"}
+                />
               )}
               {routes["/about"] && (
-                <>
-                  <Row s={{ hide: true }}>
-                    <ToggleButton
-                      prefixIcon="person"
-                      href="/about"
-                      label={about.label}
-                      selected={pathname === "/about"}
-                    />
-                  </Row>
-                  <Row hide s={{ hide: false }}>
-                    <ToggleButton
-                      prefixIcon="person"
-                      href="/about"
-                      selected={pathname === "/about"}
-                    />
-                  </Row>
-                </>
+                <ToggleButton
+                  href="/about"
+                  label={about.label}
+                  selected={pathname === "/about"}
+                />
               )}
               {routes["/blog"] && (
-                <>
-                  <Row s={{ hide: true }}>
-                    <ToggleButton
-                      prefixIcon="book"
-                      href="/blog"
-                      label={blog.label}
-                      selected={pathname.startsWith("/blog")}
-                    />
-                  </Row>
-                  <Row hide s={{ hide: false }}>
-                    <ToggleButton
-                      prefixIcon="book"
-                      href="/blog"
-                      selected={pathname.startsWith("/blog")}
-                    />
-                  </Row>
-                </>
+                <ToggleButton
+                  href="/blog"
+                  label={blog.label}
+                  selected={pathname.startsWith("/blog")}
+                />
               )}
-              {display.themeSwitcher && (
-                <>
-                  <Line background="neutral-alpha-medium" vert maxHeight="24" />
-                  <ThemeToggle />
-                </>
+              {routes["/contact"] && (
+                <ToggleButton
+                  href="/contact"
+                  label="Contact"
+                  selected={pathname === "/contact"}
+                />
               )}
+              {display.themeSwitcher && <ThemeToggle />}
             </Row>
           </Row>
         </Row>
@@ -188,11 +143,61 @@ export const Header = () => {
             gap="20"
           >
             <Flex s={{ hide: true }}>
-              {display.time && <TimeDisplay timeZone={person.location} />}
+              {display.time && <div>{person.location}</div>}
             </Flex>
           </Flex>
         </Flex>
       </Row>
+
+      {/* Mobile hamburger */}
+      <Row hide s={{ hide: false }} fillWidth padding="8" position="fixed" style={{ top: 0, left: 0, right: 0, zIndex: 10 }}>
+        <Row fillWidth horizontal="end" gap="8" padding="4">
+          {display.themeSwitcher && <ThemeToggle />}
+          <button
+            onClick={() => setMobileOpen(!mobileOpen)}
+            aria-label="Menu"
+            style={{
+              background: "var(--neutral-surface)",
+              border: "1px solid var(--neutral-border-medium)",
+              borderRadius: "8px",
+              padding: "6px 10px",
+              cursor: "pointer",
+              color: "var(--neutral-on-background-strong)",
+              fontSize: "1.2rem",
+              lineHeight: 1,
+            }}
+          >
+            {mobileOpen ? "✕" : "☰"}
+          </button>
+        </Row>
+      </Row>
+
+      {mobileOpen && (
+        <div
+          style={{
+            position: "fixed",
+            top: "52px",
+            left: "12px",
+            right: "12px",
+            background: "var(--neutral-surface)",
+            border: "1px solid var(--neutral-border-medium)",
+            borderRadius: "16px",
+            padding: "12px",
+            boxShadow: "0 8px 32px rgba(0,0,0,0.1)",
+            zIndex: 100,
+            display: "flex",
+            flexDirection: "column",
+            gap: "4px",
+          }}
+        >
+          <ToggleButton href="/" label="Home" selected={pathname === "/"} fillWidth onClick={() => setMobileOpen(false)} />
+          <ToggleButton href="/tools" label="Tools" selected={pathname === "/tools" || pathname.startsWith("/tools/")} fillWidth onClick={() => setMobileOpen(false)} />
+          {routes["/features"] && <ToggleButton href="/features" label="Features" selected={pathname === "/features"} fillWidth onClick={() => setMobileOpen(false)} />}
+          {routes["/about"] && <ToggleButton href="/about" label={about.label} selected={pathname === "/about"} fillWidth onClick={() => setMobileOpen(false)} />}
+          {routes["/blog"] && <ToggleButton href="/blog" label={blog.label} selected={pathname.startsWith("/blog")} fillWidth onClick={() => setMobileOpen(false)} />}
+          {routes["/contact"] && <ToggleButton href="/contact" label="Contact" selected={pathname === "/contact"} fillWidth onClick={() => setMobileOpen(false)} />}
+        </div>
+      )}
     </>
   );
 };

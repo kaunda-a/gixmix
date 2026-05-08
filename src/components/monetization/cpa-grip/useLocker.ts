@@ -28,8 +28,7 @@ const STORAGE_KEY = "gixmix_unlocked";
 function checkStorage(lockerId: string): boolean {
   if (typeof window === "undefined") return false;
   try {
-    const stored = localStorage.getItem(`${STORAGE_KEY}_${lockerId}`);
-    return stored === "true";
+    return localStorage.getItem(`${STORAGE_KEY}_${lockerId}`) === "true";
   } catch {
     return false;
   }
@@ -53,6 +52,7 @@ export function useLocker({ lockerId }: UseLockerOptions): UseLockerReturn {
   const [error, setError] = useState<string | null>(null);
   const checkRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const safetyRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const pollIntervalRef = useRef(1000);
 
   useEffect(() => {
     return () => {
@@ -70,6 +70,7 @@ export function useLocker({ lockerId }: UseLockerOptions): UseLockerReturn {
       clearTimeout(safetyRef.current);
       safetyRef.current = null;
     }
+    pollIntervalRef.current = 1000;
   }, []);
 
   const complete = useCallback(() => {
@@ -93,31 +94,36 @@ export function useLocker({ lockerId }: UseLockerOptions): UseLockerReturn {
   }, [lockerId, stopPolling]);
 
   const detectCompletion = useCallback(() => {
-    checkRef.current = setInterval(() => {
+    pollIntervalRef.current = 1000;
+
+    const poll = () => {
       const overlay = document.getElementById("of74hnxtcg");
 
-      // If overlay exists and is hidden/removed, user completed the offer
       if (overlay && (overlay.style.display === "none" || !document.body.contains(overlay))) {
         complete();
         return;
       }
 
-      // Look for CPA Grip locker root element (varies by locker)
-      const lockerRoot = document.querySelector('[id^="bo"]');
-      if (!lockerRoot && !overlay) {
-        // Both overlay and locker root are gone - likely completed
-        // But wait a bit to be sure
+      if (!overlay) {
+        const lockerRoot = document.querySelector('[id^="bo"]');
+        if (!lockerRoot) {
+          complete();
+          return;
+        }
       }
-    }, 1000);
 
-    // Safety timeout after 10 minutes - don't auto-complete, just stop polling
+      pollIntervalRef.current = Math.min(pollIntervalRef.current * 1.5, 5000);
+    };
+
+    checkRef.current = setInterval(poll, pollIntervalRef.current);
+
     safetyRef.current = setTimeout(() => {
       if (checkRef.current) {
         clearInterval(checkRef.current);
         checkRef.current = null;
       }
       setLoading(false);
-      setError("Offer verification timed out. Please click 'I've completed the offer' if you finished it.");
+      setError("Still waiting for verification. Click 'I've completed the offer' if you finished.");
     }, 600000);
   }, [complete]);
 

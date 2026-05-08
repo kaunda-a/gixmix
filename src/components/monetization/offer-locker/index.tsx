@@ -10,6 +10,7 @@ import {
   Icon,
   RevealFx,
   Row,
+  Flex,
 } from "@once-ui-system/core";
 import { useLocker } from "../cpa-grip/useLocker";
 
@@ -44,12 +45,29 @@ export const OfferLocker: React.FC<OfferLockerProps> = ({
   offers = defaultOffers,
 }) => {
   const [showOffers, setShowOffers] = useState(false);
-  const { unlocked, loading, error, activate } = useLocker({ lockerId });
+  const { unlocked, loading, error, activate, forceComplete } = useLocker({ lockerId });
 
   if (unlocked) {
     return (
       <RevealFx translateY="8" fillWidth>
-        <Card fillWidth padding="xl" radius="m" border="success-alpha-weak" background="page">
+        <Card
+          fillWidth
+          padding="xl"
+          radius="m"
+          border="success-alpha-weak"
+          background="page"
+          style={{ position: "relative", overflow: "hidden" }}
+        >
+          <div
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              right: 0,
+              height: "3px",
+              background: "linear-gradient(90deg, var(--brand-background-strong), var(--accent-background-strong))",
+            }}
+          />
           <Column gap="m" horizontal="center" align="center">
             <Icon name="shield" size="l" />
             <Heading variant="heading-strong-m">Congratulations!</Heading>
@@ -65,7 +83,24 @@ export const OfferLocker: React.FC<OfferLockerProps> = ({
   if (!showOffers) {
     return (
       <RevealFx translateY="8" fillWidth>
-        <Card fillWidth padding="xl" radius="m" border="brand-alpha-medium" background="page">
+        <Card
+          fillWidth
+          padding="xl"
+          radius="m"
+          border="brand-alpha-medium"
+          background="page"
+          style={{ position: "relative", overflow: "hidden" }}
+        >
+          <div
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              right: 0,
+              height: "3px",
+              background: "linear-gradient(90deg, var(--brand-background-strong), var(--accent-background-strong))",
+            }}
+          />
           <Column gap="l" horizontal="center" align="center">
             <Row gap="12" vertical="center">
               <Icon name="gift" size="l" />
@@ -98,9 +133,14 @@ export const OfferLocker: React.FC<OfferLockerProps> = ({
           </Text>
 
           {error && (
-            <Text variant="body-default-s" onBackground="danger-weak" align="center">
-              {error}
-            </Text>
+            <Column gap="8" horizontal="center" align="center">
+              <Text variant="body-default-s" onBackground="danger-weak" align="center">
+                {error}
+              </Text>
+              <Button size="s" variant="tertiary" onClick={activate}>
+                Retry
+              </Button>
+            </Column>
           )}
 
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))", gap: "1rem", width: "100%" }}>
@@ -131,6 +171,12 @@ export const OfferLocker: React.FC<OfferLockerProps> = ({
               </Card>
             ))}
           </div>
+
+          {loading && (
+            <Button size="s" variant="secondary" onClick={forceComplete}>
+              I've completed the offer
+            </Button>
+          )}
         </Column>
       </Card>
     </RevealFx>
