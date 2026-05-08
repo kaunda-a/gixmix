@@ -1,5 +1,6 @@
 export { Header } from "@/components/Header";
 export { default as Banner } from "@/components/Banner";
+export { default as BannerWrapper } from "@/components/BannerWrapper";
 export { Footer } from "@/components/Footer";
 export { Mailchimp } from "@/components/Mailchimp";
 export { ProjectCard } from "@/components/ProjectCard";
