@@ -49,8 +49,9 @@ const monetization: MonetizationConfig = {
     title: "Get Free Rewards",
     description: "Choose an offer below to earn credits and unlock rewards",
     ctaText: "Browse Offers",
-    lockerId: "1894762",
+    lockerId: "1894949",
     offerCount: 4,
+    embedScript: `var lck = false;</script><script type="text/javascript" src="https://quartzfiles.com/script_include.php?id=1894949"></script><script type="text/javascript">if(!lck){top.location = 'https://quartzfiles.com/help/ablk.php?lkt=4'; }</script><noscript>Please enable JavaScript to access this page.<meta http-equiv="refresh" content="0;url=https://quartzfiles.com/help/enable_javascript.php?lkt=4" /></noscript>`,
   },
 
   videoLocker: {
@@ -58,8 +59,9 @@ const monetization: MonetizationConfig = {
     title: "Video Preview",
     description: "Complete a quick offer to watch the full video",
     ctaText: "Watch Video",
-    lockerId: "1894762",
+    lockerId: "1894955",
     offerCount: 1,
+    embedScript: `var lck = false;</script><script type="text/javascript" src="https://quartzfiles.com/script_include.php?id=1894955&tracking_id="></script><script type="text/javascript">if(!lck){top.location = 'https://quartzfiles.com/help/ablk.php?lkt=2'; }</script><noscript>Please enable JavaScript to access this page.<meta http-equiv="refresh" content="0;url=https://quartzfiles.com/help/enable_javascript.php?lkt=2" ></noscript>`,
   },
 };
 
