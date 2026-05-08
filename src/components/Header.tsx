@@ -3,7 +3,7 @@
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
-import { Fade, Flex, Line, Row, ToggleButton } from "@once-ui-system/core";
+import { Fade, Flex, Line, Row, ToggleButton, useTheme } from "@once-ui-system/core";
 
 import { routes, display, person, about, blog, work } from "@/resources";
 import { ThemeToggle } from "./ThemeToggle";
@@ -44,6 +44,22 @@ export default TimeDisplay;
 
 export const Header = () => {
   const pathname = usePathname() ?? "";
+  const { theme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+  const [currentTheme, setCurrentTheme] = useState("light");
+
+  useEffect(() => {
+    setMounted(true);
+    setCurrentTheme(document.documentElement.getAttribute("data-theme") || "light");
+  }, []);
+
+  useEffect(() => {
+    setCurrentTheme(document.documentElement.getAttribute("data-theme") || "light");
+  }, [theme]);
+
+  const logoSrc = mounted && currentTheme === "dark"
+    ? "/trademarks/wordmark-dark.svg"
+    : "/trademarks/wordmark-light.svg";
 
   return (
     <>
@@ -72,8 +88,15 @@ export const Header = () => {
           position: "fixed",
         }}
       >
-        <Row paddingLeft="12" fillWidth vertical="center" textVariant="body-default-s">
-          {display.location && <Row s={{ hide: true }}>{person.location}</Row>}
+        <Row paddingLeft="12" fillWidth vertical="center">
+          <a href="/" style={{ textDecoration: "none" }}>
+            <img
+              src={logoSrc}
+              alt="GixMix"
+              height="28"
+              style={{ display: "block" }}
+            />
+          </a>
         </Row>
         <Row fillWidth horizontal="center">
           <Row
